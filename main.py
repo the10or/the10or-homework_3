@@ -2,8 +2,24 @@ from datetime import date, datetime
 
 
 def get_birthdays_per_week(users):
-    # Реалізуйте тут домашнє завдання
-    return users
+    today = date.today()
+    birthdays = {}
+    for user in users:
+        year = today.year + 1 if (today.month == 12 and today.day > 24) and user["birthday"].month == 1 else today.year
+        birthday = datetime(year, user["birthday"].month, user["birthday"].day).date()
+        if 0 <= (birthday - today).days < 7:
+
+            weekday = birthday.strftime("%A")
+            if weekday == 'Saturday' or weekday == 'Sunday':
+                weekday = 'Monday'
+
+            name = user["name"].split()[0]
+            if weekday in birthdays.keys():
+                birthdays[weekday].append(name)
+            else:
+                birthdays[weekday] = [name]
+
+    return birthdays
 
 
 if __name__ == "__main__":
